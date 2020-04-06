@@ -1,5 +1,4 @@
 import category.CategoryInitializer;
-import fetch.TextFetcher;
 import lombok.extern.slf4j.Slf4j;
 import models.Category;
 import utils.Classifier;
@@ -10,6 +9,9 @@ import java.util.*;
 @Slf4j
 public class Main {
     public static void main(String[] args){
+
+        int availableProcessors = Runtime.getRuntime().availableProcessors();
+        System.out.println(availableProcessors);
 
         Classifier classifier = new Classifier();
         DataPrinter printer = new DataPrinter();

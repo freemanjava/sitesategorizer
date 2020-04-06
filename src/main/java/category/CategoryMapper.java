@@ -14,7 +14,7 @@ import java.util.concurrent.*;
 public class CategoryMapper {
 
     private final long TIME_TERMINATION = 10;
-    private final int THREAD_COUNTER = 7;
+    private final int THREAD_COUNTER = 20;
     private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNTER);
     private final List<String> urls;
     private final List<Category> categories;
@@ -23,6 +23,8 @@ public class CategoryMapper {
         this.urls = urls;
         this.categories = categories;
     }
+
+
 
     public Map<String, List<String>> getCategoryMapping(){
         Map<String, List<String>> mappedUrls = serviceExecute();

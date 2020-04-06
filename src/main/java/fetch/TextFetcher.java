@@ -14,7 +14,7 @@ import java.util.concurrent.*;
 public class TextFetcher {
 
     private final long TIME_TERMINATION = 10;
-    private final int THREAD_COUNTER = 7;
+    private final int THREAD_COUNTER = 20;
     private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNTER);
 
     public Map<String, String> getTextBulkUrls(List<String> urls){
