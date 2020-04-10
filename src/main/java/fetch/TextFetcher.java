@@ -25,7 +25,7 @@ public class TextFetcher {
 
     public String getTextSingleUrl(String url) throws IOException {
         Parser parser = new Parser(url);
-        return parser.getTextFromUrl();
+        return parser.getTextFromUrl(url);
     }
 
     private Map<String, String> serviceExecute(List<String> urls) {
@@ -45,18 +45,18 @@ public class TextFetcher {
         }
 
         if (futures == null) {
-            log.warn("Parser didn't work");
+//            log.warn("Parser didn't work");
         } else {
             for (Future<Map<String, String>> future : futures) {
                 if (future == null) {
-                    log.warn("Something wrong with url: ");
+//                    log.warn("Something wrong with url: ");
                 } else {
                     try {
                         parsedTextFromUrl = future.get();
                     } catch (InterruptedException e) {
-                        log.warn("InterruptedException: " + parsedTextFromUrl.keySet());
+//                        log.warn("InterruptedException: " + parsedTextFromUrl.keySet());
                     } catch (ExecutionException e) {
-                        log.warn("ExecutionException: " + parsedTextFromUrl.keySet());
+//                        log.warn("ExecutionException: " + parsedTextFromUrl.keySet());
                     }
                     result.putAll(parsedTextFromUrl);
                 }
@@ -71,15 +71,15 @@ public class TextFetcher {
             executorService.awaitTermination(TIME_TERMINATION, TimeUnit.SECONDS);
         }
         catch (InterruptedException e) {
-            log.warn("tasks interrupted");
+//            log.warn("tasks interrupted");
         }
         finally {
             if (!executorService.isTerminated()) {
-                log.warn("cancel non-finished tasks");
+//                log.warn("cancel non-finished tasks");
             }
             executorService.shutdownNow();
             System.out.println();
-            log.info("Shutdown finished");
+//            log.info("Shutdown finished");
         }
     }
 }

@@ -18,13 +18,13 @@ public class CategoryMapper {
     private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNTER);
     private final List<String> urls;
     private final List<Category> categories;
+    private final TextFetcher textFetcher = new TextFetcher();
+
 
     public CategoryMapper(List<String> urls, List<Category> categories) {
         this.urls = urls;
         this.categories = categories;
     }
-
-
 
     public Map<String, List<String>> getCategoryMapping(){
         Map<String, List<String>> mappedUrls = serviceExecute();
@@ -33,7 +33,6 @@ public class CategoryMapper {
     }
 
     private Map<String, String> fetchText (){
-        TextFetcher textFetcher = new TextFetcher();
         return textFetcher.getTextBulkUrls(urls);
     }
 
@@ -56,18 +55,18 @@ public class CategoryMapper {
         }
 
         if (futures == null) {
-            log.warn("Parser didn't work");
+//            log.warn("Parser didn't work");
         } else {
             for (Future<Map<String, List<String>>> future : futures) {
                 if (future == null) {
-                    log.warn("Something wrong with url: ");
+//                    log.warn("Something wrong with url: ");
                 } else {
                     try {
                         mappedUrls = future.get();
                     } catch (InterruptedException e) {
-                        log.warn("InterruptedException: " + mappedUrls.keySet());
+//                        log.warn("InterruptedException: " + mappedUrls.keySet());
                     } catch (ExecutionException e) {
-                        log.warn("ExecutionException: " + mappedUrls.keySet());
+//                        log.warn("ExecutionException: " + mappedUrls.keySet());
                     }
                     result.putAll(mappedUrls);
                 }
@@ -82,15 +81,15 @@ public class CategoryMapper {
             executorService.awaitTermination(TIME_TERMINATION, TimeUnit.SECONDS);
         }
         catch (InterruptedException e) {
-            log.warn("tasks interrupted");
+//            log.warn("tasks interrupted");
         }
         finally {
             if (!executorService.isTerminated()) {
-                log.warn("cancel non-finished tasks");
+//                log.warn("cancel non-finished tasks");
             }
             executorService.shutdownNow();
             System.out.println();
-            log.info("Shutdown finished");
+//            log.info("Shutdown finished");
         }
     }
 }

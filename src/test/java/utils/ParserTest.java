@@ -3,7 +3,6 @@ package utils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.omg.CosNaming.NamingContextExtPackage.URLStringHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,9 +44,10 @@ public class ParserTest {
 
     @Test
     public void getTextFromUrlTest(){
+        String url = webURL;
         String textFromUrl = null;
         try {
-            textFromUrl = parser.getTextFromUrl();
+            textFromUrl = parser.getTextFromUrl(url);
         } catch (IOException e) {
             e.printStackTrace();
         }

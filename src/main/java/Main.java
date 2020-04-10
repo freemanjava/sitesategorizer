@@ -10,9 +10,6 @@ import java.util.*;
 public class Main {
     public static void main(String[] args){
 
-        int availableProcessors = Runtime.getRuntime().availableProcessors();
-        System.out.println(availableProcessors);
-
         Classifier classifier = new Classifier();
         DataPrinter printer = new DataPrinter();
 

@@ -1,7 +1,8 @@
 package category;
 
 import models.Category;
-import search.BoyerMooreAlgorithm;
+import search.Searchable;
+import search.impl.BoyerMooreAlgorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class CategoryFinder implements Callable<Map<String, List<String>>>{
     private final String url;
     private final List<Category> categoryList;
 
-    private BoyerMooreAlgorithm occurrencesSearcher = new BoyerMooreAlgorithm();
+    private final Searchable occurrencesSearcher = new BoyerMooreAlgorithm();
 
     public CategoryFinder(String url, String text, List<Category> categoryList) {
         this.url = url;
@@ -23,8 +24,22 @@ public class CategoryFinder implements Callable<Map<String, List<String>>>{
         this.categoryList = categoryList;
     }
 
-    private boolean findFirstOccurrence(String pattern){
+    private boolean findFirstOccurrence(String text, String pattern){
         return occurrencesSearcher.searchFirstOccurrence(text, pattern);
+    }
+
+    private Map<String, Integer> findAllOccurrences(String text, String pattern){
+        return occurrencesSearcher.searchAllOccurrences(text, pattern);
+    }
+
+    public Map<String, Integer> getOccurrencesCount(String text, List<Category> categories){
+        Map<String, Integer> result = new HashMap<>();
+        for (Category category : categories){
+            for (String pattern : category.getCategoryWords()){
+                result = findAllOccurrences(text, pattern);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -33,7 +48,7 @@ public class CategoryFinder implements Callable<Map<String, List<String>>>{
         Map<String, List<String>> foundCategory = new HashMap<>();
         for (Category category : categoryList) {
             for (String pattern : category.getCategoryWords()) {
-                boolean found = findFirstOccurrence(pattern);
+                boolean found = findFirstOccurrence(text, pattern);
                 if (found) {
                     categories.add(category.getCategoryName());
                     break;

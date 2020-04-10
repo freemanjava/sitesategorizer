@@ -27,14 +27,14 @@ public class Parser implements Callable<Map<String, String>> {
     @Override
     public Map<String, String> call() throws IOException {
         Map<String, String> resultMap = new HashMap<>();
-        String text = getTextFromUrl();
+        String text = getTextFromUrl(webPageUrl);
         resultMap.put(webPageUrl, text);
         return resultMap;
     }
 
-    public String getTextFromUrl() throws IOException {
-        String htmlFromURL = getHTMLFromURL();
-        return getTextDataFromHtmlDocument(htmlFromURL);
+    public String getTextFromUrl(String urlString) throws IOException {
+        String htmlFromURL = getHTMLFromURL(urlString);
+        return extractTextFromHtml(htmlFromURL);
     }
 
     private Elements getRawDataFromHtmlDocument(String htmlDocument){
@@ -44,15 +44,15 @@ public class Parser implements Callable<Map<String, String>> {
         return body.getAllElements();
     }
 
-    private String getTextDataFromHtmlDocument(String htmlDocument){
+    private String extractTextFromHtml(String htmlDocument){
         Document document = Jsoup.parse(htmlDocument);
         return document.body().text();
     }
 
-    private String getHTMLFromURL() throws IOException {
+    private String getHTMLFromURL(String urlString) throws IOException {
         String htmlDocument;
         try {
-            URLConnection url = new URL(webPageUrl).openConnection();
+            URLConnection url = new URL(urlString).openConnection();
             url.setRequestProperty("User-Agent","Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X) AppleWebKit/602.4.6 (KHTML, like Gecko) Version/10.0 Mobile/14D27 Safari/602.1");
             BufferedReader in = new BufferedReader(new InputStreamReader(url.getInputStream()));
             StringBuilder sb = new StringBuilder();

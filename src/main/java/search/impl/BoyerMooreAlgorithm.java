@@ -1,6 +1,11 @@
-package search;
+package search.impl;
 
-public class BoyerMooreAlgorithm {
+import search.Searchable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class BoyerMooreAlgorithm implements Searchable {
 
     private void strongSuffixPreprocessing(int[] shift, int[] bpos, char[] pat, int m){
         // m is the length of pattern
@@ -59,6 +64,7 @@ public class BoyerMooreAlgorithm {
 
     /*Search for a pattern in given text using
     Boyer Moore algorithm with Good suffix rule */
+    @Override
     public boolean searchFirstOccurrence(String textString, String pattern){
         char[] text = searchPreparation(textString);
         char[] pat = searchPreparation(pattern);
@@ -102,8 +108,10 @@ public class BoyerMooreAlgorithm {
         }
         return false;
     }
-
-    public void searchAllOccurrences(String textString, String pattern){
+    @Override
+    public Map<String, Integer> searchAllOccurrences(String textString, String pattern){
+        int occurrencesCounter = 0;
+        Map<String, Integer> searchResult = new HashMap<>();
         char[] text = searchPreparation(textString);
         char[] pat = searchPreparation(pattern);
         // s is shift of the pattern
@@ -135,6 +143,7 @@ public class BoyerMooreAlgorithm {
         /* If the pattern is present at the current shift,
         then index j will become -1 after the above loop */
             if (j < 0) {
+                occurrencesCounter += 1;
                 System.out.printf("pattern occurs at shift = %d\n", s);
                 s += shift[0];
             } else
@@ -143,5 +152,7 @@ public class BoyerMooreAlgorithm {
             shift[j+1] times */
                 s += shift[j + 1];
         }
+        searchResult.put(pattern, occurrencesCounter);
+        return searchResult;
     }
 }
